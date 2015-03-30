@@ -2,6 +2,7 @@ var BookItem = React.createClass({
   render: function(){
     var createTr = function(item) {
       return  <tr>
+                <td><img src={item.imageUrl} className="book_cover_small"/></td>
                 <td>{item.title}</td>
                 <td>{item.year}</td>
                 <td><a href={item._links.author.href}>{item._links.author.href}</a></td>
@@ -36,9 +37,10 @@ var BooksList = React.createClass({
     return  <section>
               <h1>Books</h1>
               <div>{this.state.books.length} items</div>
-              <table>
+              <table className="table table-condensed">
                 <thead>
                   <tr>
+                    <th></th>
                     <th>Title</th>
                     <th>Year</th>
                     <th>Author</th>
