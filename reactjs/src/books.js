@@ -5,7 +5,7 @@ var BookItem = React.createClass({
                 <td><img src={item.imageUrl} className="book_cover_small"/></td>
                 <td>{item.title}</td>
                 <td>{item.year}</td>
-                <td><a href={item._links.author.href}>{item._links.author.href}</a></td>
+                <td><a href={"authors.html?id="+item.authorId}>{item.authorName}</a></td>
               </tr>
     };
 
@@ -27,7 +27,7 @@ var BooksList = React.createClass({
     $.get(this.props.source, function(data){
       if (this.isMounted()) {
         this.setState({
-          books: data._embedded.books
+          books: data
         });
       }
     }.bind(this));
@@ -53,6 +53,6 @@ var BooksList = React.createClass({
 });
 
 React.render(
-  <BooksList source="/books" />,
+  <BooksList source="/xxx" />,
   document.getElementById('app')
 );
