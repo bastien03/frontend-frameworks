@@ -1,3 +1,18 @@
+function getURLParameter(sParam)
+{
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('&');
+    for (var i = 0; i < sURLVariables.length; i++)
+    {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+            return sParameterName[1];
+        }
+    }
+}
+
+
 var BookItem = React.createClass({
   render: function(){
     var createTr = function(item) {
@@ -27,7 +42,7 @@ var BooksList = React.createClass({
     $.get(this.props.source, function(data){
       if (this.isMounted()) {
         this.setState({
-          books: data
+          books: data._embedded.books
         });
       }
     }.bind(this));
@@ -52,7 +67,37 @@ var BooksList = React.createClass({
   },
 });
 
+var Author = React.createClass({
+
+  getInitialState: function() {
+    return {
+      author: {}
+    }
+  },
+
+  componentDidMount: function() {
+    $.get('/api/authors/' + this.props.id, function(data){
+      if (this.isMounted()) {
+        this.setState({
+          author: data
+        });
+      }
+    }.bind(this));
+  },
+
+
+  render: function() {
+    return <section>
+      <h1>{this.state.author.name}</h1>
+      <BooksList source={"/api/books/search/findByAuthorId?authorId="+this.props.id} />
+    </section>
+  }
+});
+
 React.render(
-  <BooksList source="/api/xxx" />,
-  document.getElementById('app')
+  <div>
+    <a href="index.html">&#8592;</a> start
+    <Author id={getURLParameter('id')} />
+  </div>,
+  document.getElementById('authorContainer')
 );
